@@ -5,7 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support import expected_conditions as EC
 import time
-PATH = "/Users/meemteam/Desktop/rtxbot/chromedriver"
+import sys
+
+PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
 
 #WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "element_id")))
@@ -26,21 +28,23 @@ try:
     cookies = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "onetrust-accept-btn-handler")))
     cookies.click()
 except:
-    print(" ")
+    print("cookie accept failed")
+
+running = True
     
+while running == True:
+    try:
+        time.sleep(1)
+        basket_add = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@id='product-actions-touch']/div[4]/div[1]/button")))
+        driver.execute_script("arguments[0].click();", basket_add)
 
-try:
-    time.sleep(1)
-    basket_add = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@id='product-actions-touch']/div[4]/div[1]/button")))
-    driver.execute_script("arguments[0].click();", basket_add)
+        time.sleep(1)
 
-    time.sleep(1)
+        driver.get("https://www.currys.co.uk/app/checkout")
 
-    driver.get("https://www.currys.co.uk/app/checkout")
-
-
-except:
-    print(" ")
+        running = False
+    except:
+        print("basket add failed")
 
 
 number = 0
@@ -57,52 +61,53 @@ while running == True:
         driver.execute_script("arguments[0].click();", address_select)
         running = False
     except:
-        print(" ")
+        print("address select failed")
 
 running = True
 while running == True:
     try:
         address_confirm = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[2]/div[2]/div/div[3]/div[1]/button"))).click()
-        rinning = False
+        running = False
     except:
-        print(" ")
-
+        print("address confirm failed")
 
 number = 1
 mail = read_file(number)
+running = True
+while running == True:
+    try:
+        email = driver.find_element(By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div[2]/div/div/form/div[1]/div/input").send_keys(mail)
+        running = False
+    except:
+        print("Email input failed")
 
-time.sleep(1)
+running = True
+while running == True:
+    try:
+        email_confirm = driver.find_element(By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div[2]/div/div/form/button")
+        driver.execute_script("arguments[0].click();", email_confirm)
+        running = False
+    except:
+        print("email confirm failed")
 
-email = driver.find_element(By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div[2]/div/div/form/div[1]/div/input").send_keys(mail)
-
-#time.sleep(1)
-
-try:
-    email_confirm = driver.find_element(By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div[2]/div/div/form/button")
-    driver.execute_script("arguments[0].click();", email_confirm)
-except:
-    print(" ")
-
-time.sleep(1)
 
 number = 2
 password = read_file(number)
 
-try:
-    password_enter = driver.find_element(By.XPATH, "//*[@id='password']/div[1]/input").send_keys(password)
-    password_confirm = driver.find_element(By.XPATH, "//*[@id='password']/div[4]/button").click()
+running = True
+while running == True:
+    try:
+        password_enter = driver.find_element(By.XPATH, "//*[@id='password']/div[1]/input").send_keys(password)
+        password_confirm = driver.find_element(By.XPATH, "//*[@id='password']/div[4]/button").click()
+        running = False
+    except:
+        print("password confirm failed")
 
-except:
-    time.sleep(1)
-    password_enter = driver.find_element(By.XPATH, "//*[@id='password']/div[1]/input").send_keys(password)
-    password_confirm = driver.find_element(By.XPATH, "//*[@id='password']/div[4]/button").click()
-
-trying = True
-
-while trying == True:
+running = True
+while running == True:
     try:
         pay = driver.find_element(By.XPATH, "//*[@id='root']/div/div[2]/div[2]/div[2]/div/div/div[4]/div[2]/div[2]/div[2]/div[2]/div[1]/button")
         pay.click()
-        trying = False
+        running = False
     except:
-        print(" ")
+        print("Go to payment failed")
