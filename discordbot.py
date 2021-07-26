@@ -332,4 +332,4 @@ async def on_message(message):
     sys.exit()
 
 
-client.run("ODA4MzU2MjY5MzY1OTE5NzQ0.YCFWcQ.2xBMhc3KgZPSG2YqeiQBdKn3UUM")
+client.run("insert discord token here")
