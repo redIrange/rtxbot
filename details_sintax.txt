@@ -2,7 +2,7 @@ address
 email
 password
 credit card number
-date 1
-date 2
+month
+year
 pin
 name
